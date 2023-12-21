@@ -173,11 +173,3 @@ It is recommended to use *Mesh* as surface. For complete coverage, enable the *h
 ## Documenting
 Open *File/Export* and select *Generate Report…* Store the report in the *metashape* folder with the project file.
 
-
-
-<div class="sketchfab-embed-wrapper"> <iframe title="Forest" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/5a3619a24efb46048863a64302da0dba/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/forest-5a3619a24efb46048863a64302da0dba?utm_medium=embed&utm_campaign=share-popup&utm_content=5a3619a24efb46048863a64302da0dba" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Forest </a> by <a href="https://sketchfab.com/VietDucNg?utm_medium=embed&utm_campaign=share-popup&utm_content=5a3619a24efb46048863a64302da0dba" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> VietDucNg </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=5a3619a24efb46048863a64302da0dba" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
-
-
-
-
-https://skfb.ly/oOXLY
