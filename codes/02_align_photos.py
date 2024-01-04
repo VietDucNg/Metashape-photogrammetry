@@ -1,0 +1,51 @@
+import Metashape
+import time
+
+doc = Metashape.app.document # accesses the current project and document
+
+def diff_time(t2, t1):
+    '''
+    Give a end and start time, subtract, and round
+    '''
+    total = str(round(t2-t1, 1))
+    return total
+
+
+def reset_region(doc):
+    '''
+    Reset the region and make it much larger than the points; necessary because if points go outside the region, they get clipped when saving
+    '''
+
+    doc.chunk.resetRegion()
+    region_dims = doc.chunk.region.size
+    region_dims[2] *= 3
+    doc.chunk.region.size = region_dims
+
+    return True
+
+#### Align photos
+# Match photos, align cameras, optimize cameras
+
+# get a beginning time stamp
+timer1a = time.time()
+
+# Align cameras
+doc.chunk.matchPhotos(downscale=0, generic_preselection=True, reference_preselection=False, filter_stationary_points=True, keypoint_limit=60000, tiepoint_limit=0, guided_matching=False, reset_matches=False, keep_keypoints=True)
+
+doc.chunk.alignCameras(adaptive_fitting=False, reset_alignment = False)
+
+# reset the region
+reset_region(doc)
+print('Reset region finish.')
+
+# save project
+doc.save()
+
+# get an ending time stamp
+timer1b = time.time()
+
+# calculate difference between end and start time to 1 decimal place
+time1 = diff_time(timer1b, timer1a)
+
+# print time record
+print('Alignment finish after',time1,'second.')

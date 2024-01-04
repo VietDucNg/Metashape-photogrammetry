@@ -16,20 +16,33 @@ class metashape_tiepoint_filter:
         self.total_tie_points = len(self.chunk.point_cloud.points)
 
     def standard_run(self):
-        #if len(self.chunk.point_cloud) == 0:
+        if len(self.chunk.dense_clouds) == 0:
             self.optimize_cameras()
             self.filter_reconstruction_uncertainty()
             self.optimize_cameras()
+            self.reset_region()
             self.doc.save()
             self.filter_projection_accuracy()
             self.optimize_cameras()
+            self.reset_region()
             self.doc.save()
             self.filter_reprojection_error()
             self.optimize_cameras()
             self.set_label_naming_template()
+            self.reset_region()
             self.doc.save()
-        #else:
-        #    print("Dense cloud exists... Ignoring..")
+        else:
+            print("Dense cloud exists... Ignoring..")
+
+    
+    def reset_region(self):
+    # Reset the region and make it much larger than the points; necessary because if points go outside the region, they get clipped when saving
+        self.chunk.resetRegion()
+        region_dims = self.chunk.region.size
+        region_dims[2] *= 3
+        self.chunk.region.size = region_dims
+        print('Reset region finish.')
+
 
     def optimize_cameras(self, parameters = None):
         print("optimize_cameras")
@@ -66,15 +79,15 @@ class metashape_tiepoint_filter:
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReprojectionError)
-        #while (len([i for i in f.values if i >= x])/self.total_tie_points) <= #0.9:
-        #    x -= 0.005
-        #    print(x)
-        #x = round(x,3)
+        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.9:
+            x += 0.05
+        print('Reprojection error level:',x)
+        x = round(x,2)
         self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_RepErr={x}"
         f.removePoints(x)
 
     def set_label_naming_template(self):
-        self.chunk.label = f"{self.chunk.label}_PcConf=XX_MeshCC=XX"
+        self.chunk.label = f"{self.chunk.label}"
 
 a = metashape_tiepoint_filter(None)
 a.standard_run()
