@@ -36,7 +36,11 @@ The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Sci
 <br />
 
 ## Code and version
-The tutorial contains Python scripts designed for Metashape version 1.8.4. The scripts can be run using Python console in Metashape.
+The tutorial not only  the main 
+
+contains Python scripts for every steps 
+
+ designed for Metashape version 1.8.4. The scripts can be run using Python console in Metashape.
 
 <br />
 
@@ -109,11 +113,14 @@ for c in chunk.cameras: # loops over all cameras in the active chunk
  > Then, filter on quality and Disable all selected cameras that do not meet the standard. Agisoft recommends a Quality of at least 0.5.
 
  ### 3. Align photos
+ 
+ Below are recommended settings for photo alignment. The code to use in Python console can be found [here](/codes/02_align_photos.py).
+
  ![align photo](/images/04_align_photo.png)
 
  #### 3.1. Improve alignment
 
-The following optimizations to improve quality of the sparse point cloud including *[Optimize Camera Alignment](#optimize-camera-alignment)*, *[Filter uncertain points](#filtering-uncertain-points)*, *[Filter by Projection accuracy](#filter-by-projection-accuracy)*, *[Filtering by Reprojection Error](#filtering-by-reprojection-error)*. Those optimizations can be automated by Python console using this [code](/codes/02_filter_tie_point).
+The following optimizations to improve quality of the sparse point cloud including *[Optimize Camera Alignment](#optimize-camera-alignment)*, *[Filter uncertain points](#filtering-uncertain-points)*, *[Filter by Projection accuracy](#filter-by-projection-accuracy)*, *[Filtering by Reprojection Error](#filtering-by-reprojection-error)*. Those optimizations can be automated by Python console using this [code](/codes/03_optimizeCamera_&_filterTiePoint.py).
 
  > [!NOTE]
  > Save project and backup data before any destructive actions
@@ -152,7 +159,7 @@ A good value to use here is 0.3, though make sure you do not remove all points b
 
 ### 4. Dense point cloud
 
-Select *Build Point Cloud* from the *Workflow* menu.
+Select *Build Point Cloud* from the *Workflow* menu. Below are recommended settings, the code to use in Python API can be found [here](/codes/04_build_denseCloud.py).
 
 ![dense point cloud](/images/09_dense_point_cloud.png)
 
@@ -165,7 +172,7 @@ Open *Tools/Point Cloud* in the menu and click on *Filter by confidence…* The 
 
 ![mesh example](/images/14_mesh_animation.gif)
 
-Selecting *Build Mesh* from the *Workflow* menu, you will be able to chose either Dense cloud or Depth map as the source. 
+Selecting *Build Mesh* from the *Workflow* menu, you will be able to chose either Dense cloud or Depth map as the source. The code for *Build Mesh* to use in Python API can be found [here](/codes/05_build_mesh.py).
 
 > [!TIP]  
 > Depth maps may lead to better results when dealing with a big number of minor details, but Dense clouds should be used as the source. If you decide to use depth maps as the source data, then make sure to enable *Reuse depth maps* to save computational time!
@@ -189,8 +196,10 @@ It is recommended to use *Mesh* as surface. For complete coverage, enable the *h
 
 ![orthomosaic](/images/13_build_orthomosaic.png)
 
+The code for *Build orthomosaic* to use in Python API can be found [here](/codes/06_build_orthomosaic.py).
+
 ### 7. DEM
-Select *Build DEM* from the *Workflow* menu.
+Select *Build DEM* from the *Workflow* menu. The code for #Buil DEM# to use in Python API can be found [here](/codes/build_DEM.py).
 
 ![build DEM](/images/15_build_DEM.png)
 
