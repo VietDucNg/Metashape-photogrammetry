@@ -36,11 +36,7 @@ The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Sci
 <br />
 
 ## Code and version
-The tutorial not only  the main 
-
-contains Python scripts for every steps 
-
- designed for Metashape version 1.8.4. The scripts can be run using Python console in Metashape.
+The tutorial not only guide the main steps of photogrammetry in Metashape GUI, but there also are Python scripts for those steps to use in Metashape Python console. The scripts were designed for Metashape version 1.8.4.
 
 <br />
 
