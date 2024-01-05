@@ -27,4 +27,4 @@ timer5b = time.time()
 
 # calculate difference between end and start time to 1 decimal place
 time5 = diff_time(timer5b, timer5a)
-print('Build Dense cloud finished after',time5,'seconds.')
+print('Build Mesh finished after',time5,'seconds.')

@@ -1,3 +1,8 @@
+# Viet Nguyen
+# University of Greifswald
+# based on the Geo-SfM course from The University Centre in Svalbard 
+# and the work from Derek Young and Alex Mandel (https://github.com/open-forest-observatory/automate-metashape/tree/main).
+
 import Metashape
 from pathlib import Path
 
