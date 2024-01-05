@@ -2,12 +2,43 @@
 
 # Metashape-photogrammetry
 
- *[Metashape](https://www.agisoft.com/)* step-by-step tutorial for photogrammetry (DEM, point clouds, orthomosaic, mesh, and texture) from arial images.
+ *[Metashape](https://www.agisoft.com/)* step-by-step tutorial using GUI and Python API for photogrammetry (DEM, point clouds, orthomosaic, mesh, and texture) from arial images.
 
-The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Science Lab](https://geo.uni-greifswald.de/en/chairs/geographie/translate-to-english-fernerkundung-und-geoinformationsverarbeitung/)* - *[University of Greifswald](https://www.uni-greifswald.de/en/)*) based on  the *[Geo-SfM](https://unisvalbard.github.io/Geo-SfM/landing-page.html#)* course from *[The University Centre in Svalbard](https://www.unis.no/)*.
+<br />
+
+## Credits
+
+The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Science Lab](https://geo.uni-greifswald.de/en/chairs/geographie/translate-to-english-fernerkundung-und-geoinformationsverarbeitung/)* - *[University of Greifswald](https://www.uni-greifswald.de/en/)*) based on  the *[Geo-SfM](https://unisvalbard.github.io/Geo-SfM/landing-page.html#)* course from *[The University Centre in Svalbard](https://www.unis.no/)* and the work from [Derek Young and Alex Mandel](https://github.com/open-forest-observatory/automate-metashape).
 
 ![uav photogrammetry image](/images/02_uav_photogrammetry.jpg)*<sup><sub>(https://www.inrae.fr/en/news/remote-sensing-dossier)</sub></sup>*
 
+<br />
+
+## Table of Contents
+[Project structure](#project-structure-1)  
+
+[Getting started](#getting-started)  
+1. [Add photos](#1-add-photos)
+2. [Estimate image quality](#2-estimate-image-quality)
+3. [Align photos](#3-align-photos)  
+        - [Optimize Camera Alignment](#optimize-camera-alignment)  
+        - [Filter uncertain points](#filter-uncertain-points)  
+        - [Filter by Projection accuracy](#filter-by-projection-accuracy)  
+        - [Filter by Reprojection Error](#filter-by-reprojection-error)
+4. [Dense point cloud](#4-dense-point-cloud)
+5. [Mesh model](#5-mesh-model)
+6. [Orthomosaic](#6-orthomosaic)
+7. [DEM](#7-dem)
+8. [Texture](#8-texture)  
+
+[Documenting](#documenting)
+
+<br />
+
+## Code and version
+The tutorial contains Python scripts designed for Metashape version 1.8.4. The scripts can be run using Python console in Metashape.
+
+<br />
 
 ## Project structure
 It is recommended to use the standardised project structure (or something similar) throughout all future projects. 
@@ -47,6 +78,8 @@ It is recommended to use the standardised project structure (or something simila
 
 
 The standardised project structures are important for automated processing and archiving.
+
+<br />
 
 ## Getting started
 ### 1. Add photos
@@ -135,7 +168,7 @@ Open *Tools/Point Cloud* in the menu and click on *Filter by confidence…* The 
 Selecting *Build Mesh* from the *Workflow* menu, you will be able to chose either Dense cloud or Depth map as the source. 
 
 > [!TIP]  
-> Depth maps may lead to better results when dealing with a big number of minor details. If you decide to use depth maps as the source data, then make sure to enable *Reuse depth maps* to save computational time!
+> Depth maps may lead to better results when dealing with a big number of minor details, but Dense clouds should be used as the source. If you decide to use depth maps as the source data, then make sure to enable *Reuse depth maps* to save computational time!
 
 ![Mesh](/images/10_Mesh.png)
 
@@ -144,21 +177,7 @@ Sometimes your mesh has some tiny parts that are not connected to the main model
 
 ![filter mesh](/images/11_filter_mesh.gif)
 
-### 6. Texture
-Open *Build Texture* from the *Workflow* menu.
-
-![build texture](/images/12_build_texture.png)
-
-*Texture size/count* determines the quality of the texture. Anything over 16384 can lead to very large file sizes on your harddisk. On the other hand, anything less than 4096 is probably insufficient. For greatest compatibility, keep the *Texture size* at 4096, but increase the *count* to e.g. 5 or 10.
-
-### 7. DEM
-Select *Build DEM* from the *Workflow* menu.
-
-It is recommended to use *Point Cloud* as the source data since it provides more accurate results and faster processing.
-
-it ist recommended to keep the interpolation parameter **Disabled** for accurate reconstruction results since only areas corresponding to point cloud or polygonal points are reconstructed. Usually, this method is recommended for Mesh and Tiled Model data source.
-
-### 8. Orthomosaic
+### 6. Orthomosaic
 Select *Build Orthomosaic* from the *Workflow* menu. To begin, you have to select the Projection parameter.
 - Geographic projectionis often used for aerial photogrammetric surveys.
 
@@ -169,6 +188,24 @@ Select *Build Orthomosaic* from the *Workflow* menu. To begin, you have to selec
 It is recommended to use *Mesh* as surface. For complete coverage, enable the *hole filling* option under *Blending mode* to fill in any empty areas of the mosaic.
 
 ![orthomosaic](/images/13_build_orthomosaic.png)
+
+### 7. DEM
+Select *Build DEM* from the *Workflow* menu.
+
+![build DEM](/images/15_build_DEM.png)
+
+It is recommended to use *Point Cloud* as the source data since it provides more accurate results and faster processing.
+
+it ist recommended to keep the interpolation parameter **Disabled** for accurate reconstruction results since only areas corresponding to point cloud or polygonal points are reconstructed. Usually, this method is recommended for Mesh and Tiled Model data source.
+
+### 8. Texture
+Open *Build Texture* from the *Workflow* menu.
+
+![build texture](/images/12_build_texture.png)
+
+*Texture size/count* determines the quality of the texture. Anything over 16384 can lead to very large file sizes on your harddisk. On the other hand, anything less than 4096 is probably insufficient. For greatest compatibility, keep the *Texture size* at 4096, but increase the *count* to e.g. 5 or 10.
+
+<br />
 
 ## Documenting
 Open *File/Export* and select *Generate Report…* Store the report in the *metashape* folder with the project file.
