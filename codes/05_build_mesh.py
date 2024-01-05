@@ -13,7 +13,7 @@ def diff_time(t2, t1):
 ### Build Mesh
 
 # get a beginning time stamp for the next step
-timer3a = time.time()
+timer5a = time.time()
 
 # build mesh
 doc.chunk.buildModel(surface_type=Metashape.Arbitrary, 
@@ -23,8 +23,8 @@ doc.chunk.buildModel(surface_type=Metashape.Arbitrary,
 doc.save()
 
 # get an ending time stamp for the previous step
-timer3b = time.time()
+timer5b = time.time()
 
 # calculate difference between end and start time to 1 decimal place
-time3 = diff_time(timer3b, timer3a)
-print('Build Dense cloud finished after',time3,'seconds.')
+time5 = diff_time(timer5b, timer5a)
+print('Build Dense cloud finished after',time5,'seconds.')

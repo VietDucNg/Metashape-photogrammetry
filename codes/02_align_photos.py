@@ -27,7 +27,7 @@ def reset_region(doc):
 # Match photos, align cameras, optimize cameras
 
 # get a beginning time stamp
-timer1a = time.time()
+timer2a = time.time()
 
 # Align cameras
 doc.chunk.matchPhotos(downscale=0, generic_preselection=True, reference_preselection=False, filter_stationary_points=True, keypoint_limit=60000, tiepoint_limit=0, guided_matching=False, reset_matches=False, keep_keypoints=True)
@@ -42,10 +42,10 @@ print('Reset region finish.')
 doc.save()
 
 # get an ending time stamp
-timer1b = time.time()
+timer2b = time.time()
 
 # calculate difference between end and start time to 1 decimal place
-time1 = diff_time(timer1b, timer1a)
+time2 = diff_time(timer2b, timer2a)
 
 # print time record
-print('Alignment finish after',time1,'second.')
+print('Alignment finish after',time2,'second.')
