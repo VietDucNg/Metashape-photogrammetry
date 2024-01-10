@@ -22,7 +22,11 @@ def diff_time(t2, t1):
 timer4a = time.time()
 
 # build depth maps only instead of also building the dense cloud ##?? what does
-doc.chunk.buildDepthMaps(downscale=1, filter_mode=Metashape.MildFiltering, reuse_depth = False, subdivide_task = False)
+doc.chunk.buildDepthMaps(downscale=1, 
+                         filter_mode=Metashape.MildFiltering, 
+                         reuse_depth = False,
+                         max_neighbors = 60,
+                         subdivide_task = False)
 doc.save()
 
 
@@ -32,7 +36,11 @@ doc.save()
 timer3a = time.time()
 
 # build dense cloud
-doc.chunk.buildDenseCloud(point_colors = True, point_confidence = True, keep_depth = True, subdivide_task = False)
+doc.chunk.buildDenseCloud(point_colors = True, 
+                          point_confidence = True, 
+                          keep_depth = True,
+                          max_neighbors=100,
+                          subdivide_task = False)
 doc.save()
 
 # get an ending time stamp for the previous step

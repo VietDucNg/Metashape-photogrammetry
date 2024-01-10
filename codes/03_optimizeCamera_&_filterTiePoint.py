@@ -25,16 +25,14 @@ class metashape_tiepoint_filter:
             self.optimize_cameras()
             self.filter_reconstruction_uncertainty()
             self.optimize_cameras()
-            self.reset_region()
             self.doc.save()
             self.filter_projection_accuracy()
             self.optimize_cameras()
-            self.reset_region()
             self.doc.save()
             self.filter_reprojection_error()
             self.optimize_cameras()
-            self.set_label_naming_template()
             self.reset_region()
+            self.set_label_naming_template()
             self.doc.save()
         else:
             print("Dense cloud exists... Ignoring..")
@@ -73,7 +71,7 @@ class metashape_tiepoint_filter:
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ProjectionAccuracy)
-        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.5:
+        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.5:
             x += 0.1
         x = round(x,1)
         self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
@@ -84,8 +82,8 @@ class metashape_tiepoint_filter:
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReprojectionError)
-        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.9:
-            x += 0.05
+        while (len(self.chunk.point_cloud.points)-(len([i for i in f.values if i >= x]))/self.total_tie_points) <= 0.1:
+            x += 0.005
         print('Reprojection error level:',x)
         x = round(x,2)
         self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_RepErr={x}"

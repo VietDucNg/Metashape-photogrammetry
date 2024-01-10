@@ -44,16 +44,30 @@ for c in chunk.cameras: # loops over all cameras in the active chunk
     c.label = str(cp.parent.name) + '/' + cp.name # renames the camera label in the metashape project to include the parent directory of the photo
 
 
+#####################
 #### align photo ####
+#####################
+
 # Match photos, align cameras, optimize cameras
 
 # get a beginning time stamp
 timer2a = time.time()
 
 # Align cameras
-doc.chunk.matchPhotos(downscale=0, generic_preselection=True, reference_preselection=False, filter_stationary_points=True, keypoint_limit=60000, tiepoint_limit=0, guided_matching=False, reset_matches=False, keep_keypoints=True)
+doc.chunk.matchPhotos(downscale=2, # medium(2) for vegetation, otherwise high(1), (1) according to USGS
+                      generic_preselection=True, 
+                      reference_preselection=True,                 
+                      reference_preselection_mode = Metashape.ReferencePreselectionSource, 
+                      filter_stationary_points=True, 
+                      keypoint_limit=40000, # 60000 for high quality photos  
+                      tiepoint_limit=0, 
+                      guided_matching=False, 
+                      reset_matches=False, 
+                      keep_keypoints=True)
 
-doc.chunk.alignCameras(adaptive_fitting=False, reset_alignment = False)
+doc.chunk.alignCameras(adaptive_fitting = True, # False according to USGS
+                       reset_alignment = False,
+                       subdivide_task = False)
 
 # reset the region
 reset_region(doc)
@@ -92,16 +106,14 @@ class metashape_tiepoint_filter:
             self.optimize_cameras()
             self.filter_reconstruction_uncertainty()
             self.optimize_cameras()
-            self.reset_region()
             self.doc.save()
             self.filter_projection_accuracy()
             self.optimize_cameras()
-            self.reset_region()
             self.doc.save()
             self.filter_reprojection_error()
             self.optimize_cameras()
-            self.set_label_naming_template()
             self.reset_region()
+            self.set_label_naming_template()
             self.doc.save()
         else:
             print("Dense cloud exists... Ignoring..")
@@ -120,27 +132,28 @@ class metashape_tiepoint_filter:
         print("optimize_cameras")
 
         self.chunk.optimizeCameras(
-            tiepoint_covariance=True,
+            adaptive_fitting = True, # False according to USGS
+            tiepoint_covariance = True,
             progress=progress_print
         )
         
-    def filter_reconstruction_uncertainty(self, x = 10):
+    def filter_reconstruction_uncertainty(self, x = 15): # 10 according to USGS
         print("filter_reconstruction_uncertainty")
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReconstructionUncertainty)
-        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.5:
+        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.2: # 0.5 according to USGS
             x += 0.1
         x = round(x,1)
         self.chunk.label = f"RecUnc={x}"
         f.removePoints(x)
         
-    def filter_projection_accuracy(self, x = 3):
+    def filter_projection_accuracy(self, x = 2): # 3 according to USGS
         print("filter_projection_accuracy")
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ProjectionAccuracy)
-        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.5:
+        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.3: # 0.5 according to USGS
             x += 0.1
         x = round(x,1)
         self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
@@ -151,8 +164,8 @@ class metashape_tiepoint_filter:
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReprojectionError)
-        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.9:
-            x += 0.05
+        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.05: # according to USGS 0.1
+            x += 0.005
         print('Reprojection error level:',x)
         x = round(x,2)
         self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_RepErr={x}"
@@ -175,7 +188,11 @@ a.standard_run()
 timer4a = time.time()
 
 # build depth maps only instead of also building the dense cloud ##?? what does
-doc.chunk.buildDepthMaps(downscale=1, filter_mode=Metashape.MildFiltering, reuse_depth = False, subdivide_task = False)
+doc.chunk.buildDepthMaps(downscale = 4, # high(2) according to USGS
+                         filter_mode = Metashape.ModerateFiltering,   # Mild according to USGS
+                         reuse_depth = False,
+                         max_neighbors = 60,
+                         subdivide_task = False)
 doc.save()
 
 
@@ -185,7 +202,11 @@ doc.save()
 timer3a = time.time()
 
 # build dense cloud
-doc.chunk.buildDenseCloud(point_colors = True, point_confidence = True, keep_depth = True, subdivide_task = False)
+doc.chunk.buildDenseCloud(point_colors = True, 
+                          point_confidence = True, 
+                          keep_depth = True,
+                          max_neighbors=60,
+                          subdivide_task = False)
 doc.save()
 
 # get an ending time stamp for the previous step
@@ -205,9 +226,11 @@ timer5a = time.time()
 
 # build mesh
 doc.chunk.buildModel(surface_type=Metashape.Arbitrary, 
-                     interpolation=Metashape.EnabledInterpolation, face_count=Metashape.HighFaceCount, 
+                     interpolation=Metashape.EnabledInterpolation, face_count=Metashape.MediumFaceCount, # high as USGS
                      source_data=Metashape.DenseCloudData, 
-                     vertex_colors=True, vertex_confidence=True, subdivide_task=False)
+                     vertex_colors=True, 
+                     vertex_confidence=True, 
+                     subdivide_task=False)
 doc.save()
 
 # get an ending time stamp for the previous step
@@ -235,7 +258,7 @@ doc.chunk.buildOrthomosaic(surface_data=Metashape.ModelData,
                            ghosting_filter=False,
                            fill_holes=True,
                            cull_faces=False,
-                           refine_seamlines=False,
+                           refine_seamlines=True, # False according to USGS 
                            subdivide_task=False,
                            projection=projection)
 doc.save()
