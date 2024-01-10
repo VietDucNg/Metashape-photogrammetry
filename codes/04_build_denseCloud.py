@@ -22,8 +22,8 @@ def diff_time(t2, t1):
 timer4a = time.time()
 
 # build depth maps only instead of also building the dense cloud ##?? what does
-doc.chunk.buildDepthMaps(downscale=1, 
-                         filter_mode=Metashape.MildFiltering, 
+doc.chunk.buildDepthMaps(downscale = 2, # medium (4) according to OFO
+                         filter_mode = Metashape.MildFiltering,   # Moderate according to OFO
                          reuse_depth = False,
                          max_neighbors = 60,
                          subdivide_task = False)

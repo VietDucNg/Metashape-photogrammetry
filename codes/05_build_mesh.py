@@ -17,9 +17,11 @@ timer5a = time.time()
 
 # build mesh
 doc.chunk.buildModel(surface_type=Metashape.Arbitrary, 
-                     interpolation=Metashape.EnabledInterpolation, face_count=Metashape.HighFaceCount, 
+                     interpolation=Metashape.EnabledInterpolation, face_count=Metashape.HighFaceCount, # medium as OFO
                      source_data=Metashape.DenseCloudData, 
-                     vertex_colors=True, vertex_confidence=True, subdivide_task=False)
+                     vertex_colors=True, 
+                     vertex_confidence=True, 
+                     subdivide_task=False)
 doc.save()
 
 # get an ending time stamp for the previous step

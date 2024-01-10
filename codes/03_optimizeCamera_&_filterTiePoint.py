@@ -51,27 +51,28 @@ class metashape_tiepoint_filter:
         print("optimize_cameras")
 
         self.chunk.optimizeCameras(
-            tiepoint_covariance=True,
+            adaptive_fitting = False, # True according to OFO
+            tiepoint_covariance = True,
             progress=progress_print
         )
         
-    def filter_reconstruction_uncertainty(self, x = 10):
+    def filter_reconstruction_uncertainty(self, x = 10): # 15 according to OFO
         print("filter_reconstruction_uncertainty")
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReconstructionUncertainty)
-        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.5:
+        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.5: # 0.2 according to OFO
             x += 0.1
         x = round(x,1)
         self.chunk.label = f"RecUnc={x}"
         f.removePoints(x)
         
-    def filter_projection_accuracy(self, x = 3):
+    def filter_projection_accuracy(self, x = 3): # 2 according to OFO
         print("filter_projection_accuracy")
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ProjectionAccuracy)
-        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.5:
+        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.5: # 0.3 according to OFO
             x += 0.1
         x = round(x,1)
         self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
@@ -82,7 +83,7 @@ class metashape_tiepoint_filter:
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReprojectionError)
-        while (len(self.chunk.point_cloud.points)-(len([i for i in f.values if i >= x]))/self.total_tie_points) <= 0.1:
+        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.1: # 0.05 according to OFO
             x += 0.005
         print('Reprojection error level:',x)
         x = round(x,2)

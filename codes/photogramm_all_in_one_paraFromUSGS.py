@@ -205,7 +205,7 @@ timer3a = time.time()
 doc.chunk.buildDenseCloud(point_colors = True, 
                           point_confidence = True, 
                           keep_depth = True,
-                          max_neighbors=60,
+                          max_neighbors=100,
                           subdivide_task = False)
 doc.save()
 

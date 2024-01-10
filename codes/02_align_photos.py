@@ -35,9 +35,20 @@ def reset_region(doc):
 timer2a = time.time()
 
 # Align cameras
-doc.chunk.matchPhotos(downscale=0, generic_preselection=True, reference_preselection=False, filter_stationary_points=True, keypoint_limit=60000, tiepoint_limit=0, guided_matching=False, reset_matches=False, keep_keypoints=True)
+doc.chunk.matchPhotos(downscale=1, # medium(2) for vegetation as OFO
+                      generic_preselection=True, 
+                      reference_preselection=True,                 
+                      reference_preselection_mode = Metashape.ReferencePreselectionSource, 
+                      filter_stationary_points=True, 
+                      keypoint_limit=40000, # 60000 for high quality photos  
+                      tiepoint_limit=0, 
+                      guided_matching=False, 
+                      reset_matches=False, 
+                      keep_keypoints=True)
 
-doc.chunk.alignCameras(adaptive_fitting=False, reset_alignment = False)
+doc.chunk.alignCameras(adaptive_fitting = False, # True as OFO
+                       reset_alignment = False,
+                       subdivide_task = False)
 
 # reset the region
 reset_region(doc)
