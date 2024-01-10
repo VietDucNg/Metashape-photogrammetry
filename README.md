@@ -8,7 +8,10 @@
 
 ## Credits
 
-The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Science Lab](https://geo.uni-greifswald.de/en/chairs/geographie/translate-to-english-fernerkundung-und-geoinformationsverarbeitung/)* - *[University of Greifswald](https://www.uni-greifswald.de/en/)*) based on  the *[Geo-SfM](https://unisvalbard.github.io/Geo-SfM/landing-page.html#)* course from *[The University Centre in Svalbard](https://www.unis.no/)* and the work from [Derek Young and Alex Mandel](https://github.com/open-forest-observatory/automate-metashape).
+The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Science Lab](https://geo.uni-greifswald.de/en/chairs/geographie/translate-to-english-fernerkundung-und-geoinformationsverarbeitung/)* - *[University of Greifswald](https://www.uni-greifswald.de/en/)*) based on  
+- The *[Geo-SfM](https://unisvalbard.github.io/Geo-SfM/landing-page.html#)* course from *[The University Centre in Svalbard](https://www.unis.no/)*
+- The [Structure From Motion tutorial](https://pubs.usgs.gov/of/2021/1039/ofr20211039.pdf) from USGS
+- And the work from [Derek Young and Alex Mandel](https://github.com/open-forest-observatory/automate-metashape).
 
 ![uav photogrammetry image](/images/02_uav_photogrammetry.jpg)*<sup><sub>(https://www.inrae.fr/en/news/remote-sensing-dossier)</sub></sup>*
 
@@ -82,6 +85,9 @@ The standardised project structures are important for automated processing and a
 <br />
 
 ## Getting started
+> [!TIP]
+> Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. The code for all-in-one workflow can be found [here](/codes/photogramm_all_in_one_paraFromUSGS.py)
+
 ### 1. Add photos
 It is helpful to include the subfolder name in the photo file name in Metashape (to differentiate photos from which flight). Below is the [code](/codes/01_rename_photo.py) for Python console to rename all photos to reflect the subfolder they are in.
 
