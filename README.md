@@ -89,7 +89,7 @@ The standardised project structures are important for automated processing and a
 
 ## Getting started
 > [!TIP]
-> Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. The code for all-in-one workflow can be found [here](/codes/photogramm_all_in_one_paraFromUSGS.py)
+> Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. The code for all-in-one workflow can be found [here](/codes/photogramm_from_mesh_Vietpara.py)
 
 ### 1. Add photos
 It is helpful to include the subfolder name in the photo file name in Metashape (to differentiate photos from which flight). Below is the [code](/codes/01_rename_photo.py) for Python console to rename all photos to reflect the subfolder they are in.
@@ -198,6 +198,15 @@ Selecting *Build Mesh* from the *Workflow* menu, you will be able to chose eithe
 Sometimes your mesh has some tiny parts that are not connected to the main model. These can be removed by the *Connected component filter*.
 
 ![filter mesh](/images/11_filter_mesh.gif)
+
+#### 7.2. Decimate mesh
+Select Tools-> Mesh->Decimate mesh. Enter an appropriate value, for example, to
+halve the number of faces in the original mesh.
+
+#### 7.3. Smooth mesh
+Select Tools ->Mesh->Smooth mesh. The strength of smoothing depends on the
+complexity of canopy. Three values are
+recommended for low, medium, and high smoothing: 50, 100 and 200 respectively.
 
 ### 8. Orthomosaic
 Select *Build Orthomosaic* from the *Workflow* menu. To begin, you have to select the Projection parameter.
