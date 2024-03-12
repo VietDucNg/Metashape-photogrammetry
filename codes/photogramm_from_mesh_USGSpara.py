@@ -3,6 +3,8 @@
 # based on the Geo-SfM course from The University Centre in Svalbard 
 # and the work from Derek Young and Alex Mandel (https://github.com/open-forest-observatory/automate-metashape/tree/main).
 
+# project crs
+EPSG = "EPSG::5650"
 
 import Metashape 
 from pathlib import Path
@@ -18,17 +20,16 @@ def diff_time(t2, t1):
     total = str(round(t2-t1, 1))
     return total
 
-
 def reset_region(doc):
     '''
-    Reset the region and make it much larger than the points; necessary because if points go outside the region, they get clipped when saving
+    Reset the region and make it much larger than the points; 
+    necessary because if points go outside the region,
+    they get clipped when saving
     '''
-
     doc.chunk.resetRegion()
     region_dims = doc.chunk.region.size
     region_dims[2] *= 3
     doc.chunk.region.size = region_dims
-
     return True
 
 def progress_print(p):
@@ -205,7 +206,7 @@ timer3a = time.time()
 doc.chunk.buildDenseCloud(point_colors = True, 
                           point_confidence = True, 
                           keep_depth = True,
-                          max_neighbors=100,
+                          max_neighbors=60,
                           subdivide_task = False)
 doc.save()
 
@@ -226,7 +227,8 @@ timer5a = time.time()
 
 # build mesh
 doc.chunk.buildModel(surface_type=Metashape.Arbitrary, 
-                     interpolation=Metashape.EnabledInterpolation, face_count=Metashape.HighFaceCount, # medium as OFO
+                     interpolation=Metashape.EnabledInterpolation, 
+                     face_count=Metashape.HighFaceCount, # medium as OFO
                      source_data=Metashape.DenseCloudData, 
                      vertex_colors=True, 
                      vertex_confidence=True, 
@@ -250,7 +252,7 @@ timer6a = time.time()
 
 # prepping projection
 projection = Metashape.OrthoProjection()
-projection.crs = Metashape.CoordinateSystem("EPSG::4326")
+projection.crs = Metashape.CoordinateSystem(EPSG)
 
 # build orthomosaic
 doc.chunk.buildOrthomosaic(surface_data=Metashape.ModelData,

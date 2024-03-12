@@ -30,7 +30,7 @@ doc.chunk.buildOrthomosaic(surface_data=Metashape.ModelData,
                            ghosting_filter=False,
                            fill_holes=True,
                            cull_faces=False,
-                           refine_seamlines=False,   # True as OFO           
+                           refine_seamlines=True,   # True as OFO           
                            subdivide_task=False,
                            projection=projection)
 doc.save()

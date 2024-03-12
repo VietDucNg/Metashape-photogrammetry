@@ -35,7 +35,7 @@ def reset_region(doc):
 timer2a = time.time()
 
 # Align cameras
-doc.chunk.matchPhotos(downscale=1, # medium(2) for vegetation as OFO
+doc.chunk.matchPhotos(downscale=2, # USGS (1) # medium(2) for vegetation as OFO
                       generic_preselection=True, 
                       reference_preselection=True,                 
                       reference_preselection_mode = Metashape.ReferencePreselectionSource, 

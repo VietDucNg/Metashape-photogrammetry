@@ -3,6 +3,8 @@
 # based on the Geo-SfM course from The University Centre in Svalbard 
 # and the work from Derek Young and Alex Mandel (https://github.com/open-forest-observatory/automate-metashape/tree/main).
 
+# project crs
+EPSG = "EPSG::5650"
 
 import Metashape 
 from pathlib import Path
@@ -18,17 +20,16 @@ def diff_time(t2, t1):
     total = str(round(t2-t1, 1))
     return total
 
-
 def reset_region(doc):
     '''
-    Reset the region and make it much larger than the points; necessary because if points go outside the region, they get clipped when saving
+    Reset the region and make it much larger than the points; 
+    necessary because if points go outside the region,
+    they get clipped when saving
     '''
-
     doc.chunk.resetRegion()
     region_dims = doc.chunk.region.size
     region_dims[2] *= 3
     doc.chunk.region.size = region_dims
-
     return True
 
 def progress_print(p):
@@ -54,7 +55,7 @@ for c in chunk.cameras: # loops over all cameras in the active chunk
 timer2a = time.time()
 
 # Align cameras
-doc.chunk.matchPhotos(downscale=2, # medium(2) for vegetation, otherwise high(1), (1) according to USGS
+doc.chunk.matchPhotos(downscale=1, # medium(2) for vegetation as OFO
                       generic_preselection=True, 
                       reference_preselection=True,                 
                       reference_preselection_mode = Metashape.ReferencePreselectionSource, 
@@ -65,7 +66,7 @@ doc.chunk.matchPhotos(downscale=2, # medium(2) for vegetation, otherwise high(1)
                       reset_matches=False, 
                       keep_keypoints=True)
 
-doc.chunk.alignCameras(adaptive_fitting = True, # False according to USGS
+doc.chunk.alignCameras(adaptive_fitting = False, # True as OFO
                        reset_alignment = False,
                        subdivide_task = False)
 
@@ -132,28 +133,28 @@ class metashape_tiepoint_filter:
         print("optimize_cameras")
 
         self.chunk.optimizeCameras(
-            adaptive_fitting = True, # False according to USGS
+            adaptive_fitting = False, # True according to OFO
             tiepoint_covariance = True,
             progress=progress_print
         )
         
-    def filter_reconstruction_uncertainty(self, x = 15): # 10 according to USGS
+    def filter_reconstruction_uncertainty(self, x = 10): # 15 according to OFO
         print("filter_reconstruction_uncertainty")
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReconstructionUncertainty)
-        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.2: # 0.5 according to USGS
+        while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.5: # 0.2 according to OFO
             x += 0.1
         x = round(x,1)
         self.chunk.label = f"RecUnc={x}"
         f.removePoints(x)
         
-    def filter_projection_accuracy(self, x = 2): # 3 according to USGS
+    def filter_projection_accuracy(self, x = 3): # 2 according to OFO
         print("filter_projection_accuracy")
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ProjectionAccuracy)
-        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.3: # 0.5 according to USGS
+        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.5: # 0.3 according to OFO
             x += 0.1
         x = round(x,1)
         self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
@@ -164,7 +165,7 @@ class metashape_tiepoint_filter:
         self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReprojectionError)
-        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.05: # according to USGS 0.1
+        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.1: # 0.05 according to OFO
             x += 0.005
         print('Reprojection error level:',x)
         x = round(x,2)
@@ -188,8 +189,8 @@ a.standard_run()
 timer4a = time.time()
 
 # build depth maps only instead of also building the dense cloud ##?? what does
-doc.chunk.buildDepthMaps(downscale = 4, # high(2) according to USGS
-                         filter_mode = Metashape.ModerateFiltering,   # Mild according to USGS
+doc.chunk.buildDepthMaps(downscale = 2, # medium (4) according to OFO
+                         filter_mode = Metashape.MildFiltering,   # Moderate according to OFO
                          reuse_depth = False,
                          max_neighbors = 60,
                          subdivide_task = False)
@@ -217,20 +218,21 @@ time4 = diff_time(timer4b, timer4a)
 print('Build Dense cloud finished after',time4,'seconds.')
 
 
-####################
-#### build mesh ####
-####################
+###################
+#### build DEM ####
+###################
 
 # get a beginning time stamp for the next step
 timer5a = time.time()
 
-# build mesh
-doc.chunk.buildModel(surface_type=Metashape.Arbitrary, 
-                     interpolation=Metashape.EnabledInterpolation, face_count=Metashape.MediumFaceCount, # high as USGS
-                     source_data=Metashape.DenseCloudData, 
-                     vertex_colors=True, 
-                     vertex_confidence=True, 
-                     subdivide_task=False)
+# prepping params for buildDem
+projection = Metashape.OrthoProjection()
+projection.crs = Metashape.CoordinateSystem(EPSG)
+
+doc.chunk.buildDem(source_data = Metashape.DenseCloudData,
+                   interpolation = Metashape.EnabledInterpolation,
+                   subdivide_task = False,
+                   projection = projection)
 doc.save()
 
 # get an ending time stamp for the previous step
@@ -238,7 +240,7 @@ timer5b = time.time()
 
 # calculate difference between end and start time to 1 decimal place
 time5 = diff_time(timer5b, timer5a)
-print('Build Mesh finished after',time5,'seconds.')
+print('Build DEM finished after',time5,'seconds.')
 
 
 ###########################
@@ -250,15 +252,15 @@ timer6a = time.time()
 
 # prepping projection
 projection = Metashape.OrthoProjection()
-projection.crs = Metashape.CoordinateSystem("EPSG::4326")
+projection.crs = Metashape.CoordinateSystem(EPSG)
 
 # build orthomosaic
-doc.chunk.buildOrthomosaic(surface_data=Metashape.ModelData,
+doc.chunk.buildOrthomosaic(surface_data=Metashape.ElevationData,
                            blending_mode=Metashape.MosaicBlending,
                            ghosting_filter=False,
                            fill_holes=True,
                            cull_faces=False,
-                           refine_seamlines=True, # False according to USGS 
+                           refine_seamlines=False,   # True as OFO           
                            subdivide_task=False,
                            projection=projection)
 doc.save()

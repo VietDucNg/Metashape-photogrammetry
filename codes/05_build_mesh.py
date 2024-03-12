@@ -16,12 +16,19 @@ def diff_time(t2, t1):
 timer5a = time.time()
 
 # build mesh
-doc.chunk.buildModel(surface_type=Metashape.Arbitrary, 
-                     interpolation=Metashape.EnabledInterpolation, face_count=Metashape.HighFaceCount, # medium as OFO
+doc.chunk.buildModel(surface_type=Metashape.HeightField, 
+                     interpolation=Metashape.EnabledInterpolation, 
+                     face_count=Metashape.MediumFaceCount, # medium as OFO
                      source_data=Metashape.DenseCloudData, 
                      vertex_colors=True, 
                      vertex_confidence=True, 
                      subdivide_task=False)
+                     
+# decimate mesh to half of face count
+doc.chunk.decimateModel(face_count = len(doc.chunk.model.faces) / 2)
+# smooth mesh
+doc.chunk.smoothModel(50)
+
 doc.save()
 
 # get an ending time stamp for the previous step

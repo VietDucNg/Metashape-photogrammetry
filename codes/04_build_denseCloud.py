@@ -27,6 +27,7 @@ doc.chunk.buildDepthMaps(downscale = 2, # medium (4) according to OFO
                          reuse_depth = False,
                          max_neighbors = 60,
                          subdivide_task = False)
+
 doc.save()
 
 
@@ -39,7 +40,7 @@ timer3a = time.time()
 doc.chunk.buildDenseCloud(point_colors = True, 
                           point_confidence = True, 
                           keep_depth = True,
-                          max_neighbors=100,
+                          max_neighbors=60,
                           subdivide_task = False)
 doc.save()
 
