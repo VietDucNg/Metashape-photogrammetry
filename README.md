@@ -23,19 +23,20 @@ The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Sci
 
 [Getting started](#getting-started)  
 1. [Add photos](#1-add-photos)
-2. [Estimate image quality](#2-estimate-image-quality)
-3. [Set primary channel](#3-set-primary-channel)
-4. [Image projection](#4-image-projection)
-5. [Align photos](#3-align-photos)  
+2. [Reflectance calibration](#2-reflectance-calibration)
+3. [Estimate image quality](#2-estimate-image-quality)
+4. [Set primary channel](#3-set-primary-channel)
+5. [Image projection](#4-image-projection)
+6. [Align photos](#3-align-photos)  
         - [Optimize Camera Alignment](#optimize-camera-alignment)  
         - [Filter uncertain points](#filter-uncertain-points)  
         - [Filter by Projection accuracy](#filter-by-projection-accuracy)  
         - [Filter by Reprojection Error](#filter-by-reprojection-error)
-6. [Dense point cloud](#4-dense-point-cloud)
-7. [Mesh model](#5-mesh-model)
-8. [Orthomosaic](#6-orthomosaic)
-9. [DEM](#7-dem)
-10. [Texture](#8-texture)  
+7. [Dense point cloud](#4-dense-point-cloud)
+8. [Mesh model](#5-mesh-model)
+9. [Orthomosaic](#6-orthomosaic)
+10. [DEM](#7-dem)
+11. [Texture](#8-texture)  
 
 [Documenting](#documenting)
 
@@ -106,7 +107,20 @@ for c in chunk.cameras: # loops over all cameras in the active chunk
     c.label = str(cp.parent.name) + '/' + cp.name # renames the camera label in the metashape project to include the parent directory of the photo
 ```
 
-### 2. Estimate image quality
+Images from MicaSense RedEdge, MicaSense Altum, Parrot Sequoia and DJI Phantom 4 Multispectral can be loaded at once for all bands. Open Workflow menu and choose Add Photos option. Select all images including reflectance calibration images and click OK button. In the Add Photos dialog choose Multi-camera system option:
+
+![add photo](/images/01_add_photo.jpeg)
+
+Metashape Pro can automatically sort out those calibration images to the special camera folder in the Workspace pane if the image meta-data says that the images are for calibration. The images will be disabled automatically (not to be used in actual processing).
+
+### 2. Reflectance calibration
+Open Tools Menu and choose to Calibrate Reflectance option. Press Locate Panels button:
+
+![reflectance calibration](/images/02_reflectance_calibration.jpeg)
+
+As a result, the images with the panel will be moved to a separate folder and the masks would be applied to cover everything on the images except the panel itself. If the panels are not located automatically, use the manual approach. 
+
+### 3. Estimate image quality
  This is done by right clicking any of the *photos* in a *Chunk*, then selecting *Estimate Image Quality…*, and select all photos to be analysed, as shown in figure below.
 
  ![estimate image quality](/images/03_estimate_image_quality.gif)
@@ -117,17 +131,17 @@ for c in chunk.cameras: # loops over all cameras in the active chunk
  > [!TIP]  
  > Then, filter on quality and Disable all selected cameras that do not meet the standard. Agisoft recommends a Quality of at least 0.5.
 
-### 3. Set primary channel
+### 4. Set primary channel
 For multispectral imagery the main processing steps (e.g., Align photos) are performed on the primary channel. Change the primary channel from the default Blue band to NIR band which is more detailed and sharp. 
 
 ![set primary channel](/images/04_set_primary_channel.png)
 
-### 4. Image projection
+### 5. Image projection
 Go to *Convert* in *Reference* panel and select the desired CRS for the project.
 
 ![image projection](/images/04_image_projection.png)
 
- ### 5. Align photos
+### 6. Align photos
  
  Below are recommended settings for photo alignment. The code to use in Python console can be found [here](/codes/02_align_photos.py).
 
@@ -172,7 +186,7 @@ A good value to use here is 0.3, though make sure you do not remove all points b
 > [!TIP]
 > After filtering points, it is important to once more optimize the alignment of the points. Doing so by revisiting the [Optimize Camera Alignment](#optimize-camera-alignment)
 
-### 6. Dense point cloud
+### 7. Dense point cloud
 
 Select *Build Point Cloud* from the *Workflow* menu. Below are recommended settings, the code to use in Python API can be found [here](/codes/04_build_denseCloud.py).
 
@@ -180,10 +194,10 @@ Select *Build Point Cloud* from the *Workflow* menu. Below are recommended setti
 
 Visualise the point confidence by clicking the gray triangle next to the nine-dotted icon and selecting *Point Cloud confidence*. The color coding (red = bad, blue = good).
 
-#### 6.1. Filter by point confidence
+#### 7.1. Filter by point confidence
 Open *Tools/Point Cloud* in the menu and click on *Filter by confidence…* The dialog that pops up allows you to set minimal and maximal confidences. For example, try setting Min:50 and Max:255. After looking at the difference, reset the filter by clicking on *Reset filter* within the *Tools/Point Cloud* menu.
 
-### 7. Mesh model
+### 8. Mesh model
 
 ![mesh example](/images/14_mesh_animation.gif)
 
@@ -194,21 +208,21 @@ Selecting *Build Mesh* from the *Workflow* menu, you will be able to chose eithe
 
 ![Mesh](/images/10_Mesh.png)
 
-#### 7.1. Filter the mesh
+#### 8.1. Filter the mesh
 Sometimes your mesh has some tiny parts that are not connected to the main model. These can be removed by the *Connected component filter*.
 
 ![filter mesh](/images/11_filter_mesh.gif)
 
-#### 7.2. Decimate mesh
+#### 8.2. Decimate mesh
 Select Tools-> Mesh->Decimate mesh. Enter an appropriate value, for example, to
 halve the number of faces in the original mesh.
 
-#### 7.3. Smooth mesh
+#### 8.3. Smooth mesh
 Select Tools ->Mesh->Smooth mesh. The strength of smoothing depends on the
 complexity of canopy. Three values are
 recommended for low, medium, and high smoothing: 50, 100 and 200 respectively.
 
-### 8. Orthomosaic
+### 9. Orthomosaic
 Select *Build Orthomosaic* from the *Workflow* menu. To begin, you have to select the Projection parameter.
 - Geographic projectionis often used for aerial photogrammetric surveys.
 
@@ -222,7 +236,7 @@ It is recommended to use *Mesh* as surface. For complete coverage, enable the *h
 
 The code for *Build orthomosaic* to use in Python API can be found [here](/codes/06_build_orthomosaic.py).
 
-### 9. DEM
+### 10. DEM
 Select *Build DEM* from the *Workflow* menu. The code for #Buil DEM# to use in Python API can be found [here](/codes/build_DEM.py).
 
 ![build DEM](/images/15_build_DEM.png)
@@ -231,7 +245,7 @@ It is recommended to use *Point Cloud* as the source data since it provides more
 
 it ist recommended to keep the interpolation parameter **Disabled** for accurate reconstruction results since only areas corresponding to point cloud or polygonal points are reconstructed. Usually, this method is recommended for Mesh and Tiled Model data source.
 
-### 10. Texture
+### 11. Texture
 Open *Build Texture* from the *Workflow* menu.
 
 ![build texture](/images/12_build_texture.png)
