@@ -24,19 +24,21 @@ The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Sci
 [Getting started](#getting-started)  
 1. [Add photos](#1-add-photos)
 2. [Reflectance calibration](#2-reflectance-calibration)
-3. [Estimate image quality](#2-estimate-image-quality)
-4. [Set primary channel](#3-set-primary-channel)
-5. [Image projection](#4-image-projection)
-6. [Align photos](#3-align-photos)  
-        - [Optimize Camera Alignment](#optimize-camera-alignment)  
-        - [Filter uncertain points](#filter-uncertain-points)  
-        - [Filter by Projection accuracy](#filter-by-projection-accuracy)  
-        - [Filter by Reprojection Error](#filter-by-reprojection-error)
-7. [Dense point cloud](#4-dense-point-cloud)
-8. [Mesh model](#5-mesh-model)
-9. [Orthomosaic](#6-orthomosaic)
-10. [DEM](#7-dem)
-11. [Texture](#8-texture)  
+3. [Estimate image quality](#3-estimate-image-quality)
+4. [Set primary channel](#4-set-primary-channel)
+5. [Image projection](#5-image-projection)
+6. [Align photos](#6-align-photos)
+7. [Add ground control points](#7-add-ground-control-points)
+8. [Improve alignment](#8-improve-alignment)  
+        - [8.1 Optimize Camera Alignment](#81-optimize-camera-alignment)  
+        - [8.2 Filter uncertain points](#82-filter-uncertain-points)  
+        - [8.3 Filter by Projection accuracy](#83-filter-by-projection-accuracy)  
+        - [8.4 Filter by Reprojection Error](#84-filter-by-reprojection-error)
+9. [Dense point cloud](#9-dense-point-cloud)
+10. [Mesh model](#10-mesh-model)
+11. [Orthomosaic](#11-orthomosaic)
+12. [DEM](#12-dem)
+13. [Texture](#13-texture)  
 
 [Documenting](#documenting)
 
@@ -90,7 +92,7 @@ The standardised project structures are important for automated processing and a
 
 ## Getting started
 > [!TIP]
-> Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. The code for all-in-one workflow can be found [here](/codes/photogramm_from_mesh_Vietpara.py)
+> Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. For fully automate workflow, use the GUI for step 1 to step 7 (add GCPs), the next steps can use the code for all-in-one workflow [here](/codes/photogramm_from_mesh_Vietpara.py)
 
 ### 1. Add photos
 It is helpful to include the subfolder name in the photo file name in Metashape (to differentiate photos from which flight). Below is the [code](/codes/01_rename_photo.py) for Python console to rename all photos to reflect the subfolder they are in.
@@ -147,14 +149,22 @@ Go to *Convert* in *Reference* panel and select the desired CRS for the project.
 
  ![align photo](/images/04_align_photo.png)
 
- #### 5.1. Improve alignment
+ ### 7. Add ground control points
+
+ Go to *Import Reference* in the *Reference* panel and load the csv file.
+
+ ![](/images/ground_control_point.png)
+
+ Follow [this tutorial](https://www.youtube.com/watch?v=G09r5PXqhBc) to set the gcp. 
+
+ ### 8. Improve alignment
 
 The following optimizations to improve quality of the sparse point cloud including *[Optimize Camera Alignment](#optimize-camera-alignment)*, *[Filter uncertain points](#filtering-uncertain-points)*, *[Filter by Projection accuracy](#filter-by-projection-accuracy)*, *[Filtering by Reprojection Error](#filtering-by-reprojection-error)*. Those optimizations can be automated by Python console using this [code](/codes/03_optimizeCamera_&_filterTiePoint.py).
 
  > [!NOTE]
  > Save project and backup data before any destructive actions
 
- ##### Optimize Camera Alignment
+ #### 8.1 Optimize Camera Alignment
  This is done by selecting *Optimize Cameras* from the *Tools* menu
 
  ![optimize camera](/images/05_optimize_camera.png)
@@ -162,7 +172,7 @@ The following optimizations to improve quality of the sparse point cloud includi
  Change the model view to show the Point Cloud Variance. Lower values (=blue) are generally better and more constrained.
 
 
-##### Filter uncertain points
+#### 8.2 Filter uncertain points
 ![filter uncertain points](/images/06_filter_by_reconstruction_uncertainty.gif)
 
 A good value to use for uncertainty lever is 10, though make sure do not remove all points by doing so!. A rule of thumb is to select no more than two-thirds to half of all points, and then delete these by pressing the Delete key on the keyboard.
@@ -170,7 +180,7 @@ A good value to use for uncertainty lever is 10, though make sure do not remove 
 > [!TIP]
 > After filtering points, it is important to once more optimize the alignment of the points. Doing so by revisiting the [Optimize Camera Alignment](#optimize-camera-alignment)
 
-##### Filter by Projection accuracy
+#### 8.3 Filter by Projection accuracy
 This time, select the points based on their *Projection accuracy*, aiming for a final Projection accuracy of 3.
 
 ![filter by projection accuracy](/images/07_filter_by_projection_accuracy.png)
@@ -178,7 +188,7 @@ This time, select the points based on their *Projection accuracy*, aiming for a 
 > [!TIP]
 > After filtering points, it is important to once more optimize the alignment of the points. Doing so by revisiting the [Optimize Camera Alignment](#optimize-camera-alignment)
 
-##### Filter by Reprojection Error
+#### 8.4 Filter by Reprojection Error
 A good value to use here is 0.3, though make sure you do not remove all points by doing so! As a rule of thumb, this final selection of points should leave you with approx. 10% of the points you started off with.
 
 ![filter by reprojection error](/images/08_filter_by_reprojection_error.png)
@@ -186,7 +196,7 @@ A good value to use here is 0.3, though make sure you do not remove all points b
 > [!TIP]
 > After filtering points, it is important to once more optimize the alignment of the points. Doing so by revisiting the [Optimize Camera Alignment](#optimize-camera-alignment)
 
-### 7. Dense point cloud
+### 9. Dense point cloud
 
 Select *Build Point Cloud* from the *Workflow* menu. Below are recommended settings, the code to use in Python API can be found [here](/codes/04_build_denseCloud.py).
 
@@ -194,10 +204,10 @@ Select *Build Point Cloud* from the *Workflow* menu. Below are recommended setti
 
 Visualise the point confidence by clicking the gray triangle next to the nine-dotted icon and selecting *Point Cloud confidence*. The color coding (red = bad, blue = good).
 
-#### 7.1. Filter by point confidence
+#### 9.1. Filter by point confidence
 Open *Tools/Point Cloud* in the menu and click on *Filter by confidence…* The dialog that pops up allows you to set minimal and maximal confidences. For example, try setting Min:50 and Max:255. After looking at the difference, reset the filter by clicking on *Reset filter* within the *Tools/Point Cloud* menu.
 
-### 8. Mesh model
+### 10. Mesh model
 
 ![mesh example](/images/14_mesh_animation.gif)
 
@@ -208,21 +218,21 @@ Selecting *Build Mesh* from the *Workflow* menu, you will be able to chose eithe
 
 ![Mesh](/images/10_Mesh.png)
 
-#### 8.1. Filter the mesh
+#### 10.1. Filter the mesh
 Sometimes your mesh has some tiny parts that are not connected to the main model. These can be removed by the *Connected component filter*.
 
 ![filter mesh](/images/11_filter_mesh.gif)
 
-#### 8.2. Decimate mesh
+#### 10.2. Decimate mesh
 Select Tools-> Mesh->Decimate mesh. Enter an appropriate value, for example, to
 halve the number of faces in the original mesh.
 
-#### 8.3. Smooth mesh
+#### 10.3. Smooth mesh
 Select Tools ->Mesh->Smooth mesh. The strength of smoothing depends on the
 complexity of canopy. Three values are
 recommended for low, medium, and high smoothing: 50, 100 and 200 respectively.
 
-### 9. Orthomosaic
+### 11. Orthomosaic
 Select *Build Orthomosaic* from the *Workflow* menu. To begin, you have to select the Projection parameter.
 - Geographic projectionis often used for aerial photogrammetric surveys.
 
@@ -236,7 +246,7 @@ It is recommended to use *Mesh* as surface. For complete coverage, enable the *h
 
 The code for *Build orthomosaic* to use in Python API can be found [here](/codes/06_build_orthomosaic.py).
 
-### 10. DEM
+### 12. DEM
 Select *Build DEM* from the *Workflow* menu. The code for #Buil DEM# to use in Python API can be found [here](/codes/build_DEM.py).
 
 ![build DEM](/images/15_build_DEM.png)
@@ -245,7 +255,7 @@ It is recommended to use *Point Cloud* as the source data since it provides more
 
 it ist recommended to keep the interpolation parameter **Disabled** for accurate reconstruction results since only areas corresponding to point cloud or polygonal points are reconstructed. Usually, this method is recommended for Mesh and Tiled Model data source.
 
-### 11. Texture
+### 13. Texture
 Open *Build Texture* from the *Workflow* menu.
 
 ![build texture](/images/12_build_texture.png)
