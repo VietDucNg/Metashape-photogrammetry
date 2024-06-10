@@ -23,8 +23,8 @@ The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Sci
 
 [Getting started](#getting-started)  
 1. [Add photos](#1-add-photos)
-2. [Reflectance calibration](#2-reflectance-calibration)
-3. [Estimate image quality](#3-estimate-image-quality)
+2. [Estimate image quality](#2-estimate-image-quality)
+3. [Reflectance calibration](#3-reflectance-calibration)
 4. [Set primary channel](#4-set-primary-channel)
 5. [Image projection](#5-image-projection)
 6. [Align photos](#6-align-photos)
@@ -115,14 +115,7 @@ Images from MicaSense RedEdge, MicaSense Altum, Parrot Sequoia and DJI Phantom 4
 
 Metashape Pro can automatically sort out those calibration images to the special camera folder in the Workspace pane if the image meta-data says that the images are for calibration. The images will be disabled automatically (not to be used in actual processing).
 
-### 2. Reflectance calibration
-Open Tools Menu and choose to Calibrate Reflectance option. Press Locate Panels button:
-
-![reflectance calibration](/images/02_reflectance_calibration.jpeg)
-
-As a result, the images with the panel will be moved to a separate folder and the masks would be applied to cover everything on the images except the panel itself. If the panels are not located automatically, use the manual approach. 
-
-### 3. Estimate image quality
+### 2. Estimate image quality
  This is done by right clicking any of the *photos* in a *Chunk*, then selecting *Estimate Image Quality…*, and select all photos to be analysed, as shown in figure below.
 
  ![estimate image quality](/images/03_estimate_image_quality.gif)
@@ -132,6 +125,13 @@ As a result, the images with the panel will be moved to a separate folder and th
  
  > [!TIP]  
  > Then, filter on quality and Disable all selected cameras that do not meet the standard. Agisoft recommends a Quality of at least 0.5.
+
+ ### 3. Reflectance calibration
+Open Tools Menu and choose to Calibrate Reflectance option. Press Locate Panels button:
+
+![reflectance calibration](/images/02_reflectance_calibration.jpeg)
+
+As a result, the images with the panel will be moved to a separate folder and the masks would be applied to cover everything on the images except the panel itself. If the panels are not located automatically, use the manual approach. 
 
 ### 4. Set primary channel
 For multispectral imagery the main processing steps (e.g., Align photos) are performed on the primary channel. Change the primary channel from the default Blue band to NIR band which is more detailed and sharp. 
