@@ -277,3 +277,28 @@ timer6b = time.time()
 # calculate difference between end and start time to 1 decimal place
 time6 = diff_time(timer6b, timer6a)
 print('Build Orthomosaic finished after',time6,'seconds.') 
+
+
+###################
+#### build DEM ####
+###################
+
+# get a beginning time stamp for the next step
+timer7a = time.time()
+
+# prepping params for buildDem
+projection = Metashape.OrthoProjection()
+projection.crs = Metashape.CoordinateSystem(EPSG)
+
+doc.chunk.buildDem(source_data = Metashape.DenseCloudData,
+                interpolation = Metashape.EnabledInterpolation,
+                subdivide_task = False,
+                projection = projection)
+doc.save()
+
+# get an ending time stamp for the previous step
+timer7b = time.time()
+
+# calculate difference between end and start time to 1 decimal place
+time7 = diff_time(timer7b, timer7a)
+print('Build DEM finished after',time7,'seconds.')

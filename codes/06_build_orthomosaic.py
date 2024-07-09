@@ -22,7 +22,7 @@ timer6a = time.time()
 
 # prepping projection
 projection = Metashape.OrthoProjection()
-projection.crs = Metashape.CoordinateSystem("EPSG::4326")
+projection.crs = Metashape.CoordinateSystem("EPSG::5650")
 
 # build orthomosaic
 doc.chunk.buildOrthomosaic(surface_data=Metashape.ModelData,

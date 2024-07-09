@@ -18,12 +18,12 @@ def diff_time(t2, t1):
 ### Build DEM
 
 # get a beginning time stamp for the next step
-timer4a = time.time()
+timer7a = time.time()
 
 
 # prepping params for buildDem
 projection = Metashape.OrthoProjection()
-projection.crs = Metashape.CoordinateSystem("EPSG::4326")
+projection.crs = Metashape.CoordinateSystem("EPSG::5650")
 
 doc.chunk.buildDem(source_data = Metashape.DenseCloudData,
                 interpolation = Metashape.EnabledInterpolation,
@@ -32,8 +32,8 @@ doc.chunk.buildDem(source_data = Metashape.DenseCloudData,
 doc.save()
 
 # get an ending time stamp for the previous step
-timer4b = time.time()
+timer7b = time.time()
 
 # calculate difference between end and start time to 1 decimal place
-time4 = diff_time(timer4b, timer4a)
-print('Build DEM finished after',time4,'seconds.')
+time7 = diff_time(timer7b, timer7a)
+print('Build DEM finished after',time7,'seconds.')
