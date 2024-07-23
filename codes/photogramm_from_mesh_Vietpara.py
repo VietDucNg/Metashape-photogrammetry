@@ -107,10 +107,10 @@ class metashape_tiepoint_filter:
             self.optimize_cameras()
             self.filter_reconstruction_uncertainty()
             self.optimize_cameras()
-            self.doc.save()
+            # self.doc.save()
             self.filter_projection_accuracy()
             self.optimize_cameras()
-            self.doc.save()
+            # self.doc.save()
             self.filter_reprojection_error()
             self.optimize_cameras()
             self.reset_region()
@@ -133,8 +133,7 @@ class metashape_tiepoint_filter:
         print("optimize_cameras")
 
         self.chunk.optimizeCameras(
-            adaptive_fitting = False, # True according to OFO
-            tiepoint_covariance = True,
+            tiepoint_covariance=True,
             progress=progress_print
         )
         
@@ -151,25 +150,27 @@ class metashape_tiepoint_filter:
         
     def filter_projection_accuracy(self, x = 2): # 3 according to usgs # 2 according to OFO
         print("filter_projection_accuracy")
-        self.chunk = self.chunk.copy()
+        # self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ProjectionAccuracy)
         while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.3: # 0.5 according to usgs # 0.3 according to OFO
             x += 0.1
         x = round(x,1)
-        self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
+        # old version with self.chunk.coppy(): self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
+        self.chunk.label = f"{self.chunk.label}_ProjAcc={x}"
         f.removePoints(x)
         
     def filter_reprojection_error(self, x = 0.3):
         print("filter_reprojection_error")
-        self.chunk = self.chunk.copy()
+        # self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReprojectionError)
         while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.05:# 0.1 as usgs # 0.05 according to OFO
             x += 0.005
         print('Reprojection error level:',x)
         x = round(x,2)
-        self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_RepErr={x}"
+        # old version with self.chunk.coppy(): self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_RepErr={x}"
+        self.chunk.label = f"{self.chunk.label}_RepErr={x}"
         f.removePoints(x)
 
     def set_label_naming_template(self):

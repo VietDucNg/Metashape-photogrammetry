@@ -74,7 +74,8 @@ class metashape_tiepoint_filter:
         while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.3: # 0.5 according to usgs # 0.3 according to OFO
             x += 0.1
         x = round(x,1)
-        self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
+        # old version with self.chunk.coppy(): self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
+        self.chunk.label = f"{self.chunk.label}_ProjAcc={x}"
         f.removePoints(x)
         
     def filter_reprojection_error(self, x = 0.3):
@@ -86,7 +87,8 @@ class metashape_tiepoint_filter:
             x += 0.005
         print('Reprojection error level:',x)
         x = round(x,2)
-        self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_RepErr={x}"
+        # old version with self.chunk.coppy(): self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_RepErr={x}"
+        self.chunk.label = f"{self.chunk.label}_RepErr={x}"
         f.removePoints(x)
 
     def set_label_naming_template(self):
