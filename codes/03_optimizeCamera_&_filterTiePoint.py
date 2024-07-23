@@ -25,10 +25,10 @@ class metashape_tiepoint_filter:
             self.optimize_cameras()
             self.filter_reconstruction_uncertainty()
             self.optimize_cameras()
-            self.doc.save()
+            # self.doc.save()
             self.filter_projection_accuracy()
             self.optimize_cameras()
-            self.doc.save()
+            # self.doc.save()
             self.filter_reprojection_error()
             self.optimize_cameras()
             self.reset_region()
@@ -68,7 +68,7 @@ class metashape_tiepoint_filter:
         
     def filter_projection_accuracy(self, x = 2): # 3 according to usgs # 2 according to OFO
         print("filter_projection_accuracy")
-        self.chunk = self.chunk.copy()
+        # self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ProjectionAccuracy)
         while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.3: # 0.5 according to usgs # 0.3 according to OFO
@@ -79,7 +79,7 @@ class metashape_tiepoint_filter:
         
     def filter_reprojection_error(self, x = 0.3):
         print("filter_reprojection_error")
-        self.chunk = self.chunk.copy()
+        # self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
         f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReprojectionError)
         while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.05:# 0.1 as usgs # 0.05 according to OFO
