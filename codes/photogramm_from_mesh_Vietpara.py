@@ -74,9 +74,6 @@ doc.chunk.alignCameras(adaptive_fitting = False, # True as OFO
 reset_region(doc)
 print('Reset region finish.')
 
-# save project
-doc.save()
-
 # get an ending time stamp
 timer2b = time.time()
 
@@ -115,7 +112,7 @@ class metashape_tiepoint_filter:
             self.optimize_cameras()
             self.reset_region()
             self.set_label_naming_template()
-            self.doc.save()
+            # self.doc.save()
         else:
             print("Dense cloud exists... Ignoring..")
 
@@ -195,7 +192,6 @@ doc.chunk.buildDepthMaps(downscale = 2, # medium (4) according to OFO
                          reuse_depth = False,
                          max_neighbors = 60,
                          subdivide_task = False)
-doc.save()
 
 
 ### Build dense cloud
@@ -209,7 +205,6 @@ doc.chunk.buildDenseCloud(point_colors = True,
                           keep_depth = True,
                           max_neighbors=60,
                           subdivide_task = False)
-doc.save()
 
 # get an ending time stamp for the previous step
 timer4b = time.time()
@@ -240,8 +235,6 @@ doc.chunk.decimateModel(face_count = len(doc.chunk.model.faces) / 2)
 # smooth mesh
 doc.chunk.smoothModel(50)
 
-doc.save()
-
 # get an ending time stamp for the previous step
 timer5b = time.time()
 
@@ -270,7 +263,6 @@ doc.chunk.buildOrthomosaic(surface_data=Metashape.ModelData,
                            refine_seamlines=True,   # True as OFO           
                            subdivide_task=False,
                            projection=projection)
-doc.save()
 
 # get an ending time stamp for the previous step
 timer6b = time.time()
@@ -295,7 +287,6 @@ doc.chunk.buildDem(source_data = Metashape.DenseCloudData,
                 interpolation = Metashape.EnabledInterpolation,
                 subdivide_task = False,
                 projection = projection)
-doc.save()
 
 # get an ending time stamp for the previous step
 timer7b = time.time()
@@ -303,3 +294,6 @@ timer7b = time.time()
 # calculate difference between end and start time to 1 decimal place
 time7 = diff_time(timer7b, timer7a)
 print('Build DEM finished after',time7,'seconds.')
+
+# save project
+doc.save()
