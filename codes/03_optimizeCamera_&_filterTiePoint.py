@@ -52,6 +52,7 @@ class metashape_tiepoint_filter:
 
         self.chunk.optimizeCameras(
             tiepoint_covariance=True,
+            adaptive_fitting = True,
             progress=progress_print
         )
         
@@ -78,7 +79,7 @@ class metashape_tiepoint_filter:
         self.chunk.label = f"{self.chunk.label}_ProjAcc={x}"
         f.removePoints(x)
         
-    def filter_reprojection_error(self, x = 0.3):
+    def filter_reprojection_error(self, x = 0.3): # 0.3 according to OFO
         print("filter_reprojection_error")
         # self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()

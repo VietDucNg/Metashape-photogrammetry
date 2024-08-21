@@ -66,7 +66,7 @@ doc.chunk.matchPhotos(downscale=2, # USGS (1) # medium(2) for vegetation as OFO
                       reset_matches=False, 
                       keep_keypoints=True)
 
-doc.chunk.alignCameras(adaptive_fitting = False, # True as OFO
+doc.chunk.alignCameras(adaptive_fitting = True, # True as OFO
                        reset_alignment = False,
                        subdivide_task = False)
 
@@ -131,6 +131,7 @@ class metashape_tiepoint_filter:
 
         self.chunk.optimizeCameras(
             tiepoint_covariance=True,
+            adaptive_fitting = True,
             progress=progress_print
         )
         
@@ -157,7 +158,7 @@ class metashape_tiepoint_filter:
         self.chunk.label = f"{self.chunk.label}_ProjAcc={x}"
         f.removePoints(x)
         
-    def filter_reprojection_error(self, x = 0.3):
+    def filter_reprojection_error(self, x = 0.3):  # 0.3 according to OFO
         print("filter_reprojection_error")
         # self.chunk = self.chunk.copy()
         f = Metashape.PointCloud.Filter()
@@ -202,7 +203,7 @@ timer3a = time.time()
 # build dense cloud
 doc.chunk.buildDenseCloud(point_colors = True, 
                           point_confidence = True, 
-                          keep_depth = True,
+                          keep_depth = False,
                           max_neighbors=60,
                           subdivide_task = False)
 

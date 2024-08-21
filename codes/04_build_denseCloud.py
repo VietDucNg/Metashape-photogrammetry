@@ -39,7 +39,7 @@ timer3a = time.time()
 # build dense cloud
 doc.chunk.buildDenseCloud(point_colors = True, 
                           point_confidence = True, 
-                          keep_depth = True,
+                          keep_depth = False,
                           max_neighbors=60,
                           subdivide_task = False)
 doc.save()

@@ -46,7 +46,7 @@ doc.chunk.matchPhotos(downscale=2, # USGS (1) # medium(2) for vegetation as OFO
                       reset_matches=False, 
                       keep_keypoints=True)
 
-doc.chunk.alignCameras(adaptive_fitting = False, # True as OFO
+doc.chunk.alignCameras(adaptive_fitting = True, # True as OFO
                        reset_alignment = False,
                        subdivide_task = False)
 
