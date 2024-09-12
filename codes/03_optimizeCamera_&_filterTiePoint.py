@@ -51,6 +51,7 @@ class metashape_tiepoint_filter:
         print("optimize_cameras")
 
         self.chunk.optimizeCameras(
+            fit_corrections=True,
             tiepoint_covariance=True,
             adaptive_fitting = True,
             progress=progress_print
