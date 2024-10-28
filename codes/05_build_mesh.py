@@ -21,8 +21,7 @@ doc.chunk.buildModel(surface_type=Metashape.HeightField,
                      face_count=Metashape.MediumFaceCount, # medium as OFO
                      source_data=Metashape.DenseCloudData, 
                      vertex_colors=True, 
-                     vertex_confidence=True, 
-                     subdivide_task=False)
+                     vertex_confidence=True)
                      
 # decimate mesh to half of face count
 doc.chunk.decimateModel(face_count = len(doc.chunk.model.faces) / 2)

@@ -44,14 +44,13 @@ doc.chunk.matchPhotos(downscale=2, # USGS (1) # medium(2) for vegetation as OFO
                       filter_stationary_points=True, 
                       keypoint_limit=40000, # 60000 for high quality photos
                       keypoint_limit_per_mpx = 5000,  
-                      tiepoint_limit=0,
+                      tiepoint_limit=4000,
                       keep_keypoints=True, 
                       guided_matching=True, 
                       reset_matches=False)
 
 doc.chunk.alignCameras(adaptive_fitting = True, # True as OFO
-                       reset_alignment = False,
-                       subdivide_task = False)
+                       reset_alignment = False)
 
 # reset the region
 reset_region(doc)

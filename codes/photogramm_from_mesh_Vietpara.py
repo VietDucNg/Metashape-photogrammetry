@@ -64,14 +64,13 @@ doc.chunk.matchPhotos(downscale=2, # USGS (1) # medium(2) for vegetation as OFO
                       filter_stationary_points=True, 
                       keypoint_limit=40000, # 60000 for high quality photos
                       keypoint_limit_per_mpx = 5000,  
-                      tiepoint_limit=0,
+                      tiepoint_limit=4000,
                       keep_keypoints=True, 
                       guided_matching=True, 
                       reset_matches=False)
 
 doc.chunk.alignCameras(adaptive_fitting = True, # True as OFO
-                       reset_alignment = False,
-                       subdivide_task = False)
+                       reset_alignment = False)
 
 # reset the region
 reset_region(doc)
@@ -193,10 +192,7 @@ timer4a = time.time()
 
 # build depth maps only instead of also building the dense cloud ##?? what does
 doc.chunk.buildDepthMaps(downscale = 2, # medium (4) according to OFO
-                         filter_mode = Metashape.MildFiltering,   # Moderate according to OFO
-                         reuse_depth = False,
-                         max_neighbors = 60,
-                         subdivide_task = False)
+                         filter_mode = Metashape.MildFiltering) # Moderate according to OFO
 
 
 ### Build dense cloud
@@ -207,9 +203,7 @@ timer3a = time.time()
 # build dense cloud
 doc.chunk.buildDenseCloud(point_colors = True, 
                           point_confidence = True, 
-                          keep_depth = False,
-                          max_neighbors=60,
-                          subdivide_task = False)
+                          max_neighbors=100)
 
 # get an ending time stamp for the previous step
 timer4b = time.time()
@@ -232,8 +226,7 @@ doc.chunk.buildModel(surface_type=Metashape.HeightField,
                      face_count=Metashape.MediumFaceCount, # medium as OFO
                      source_data=Metashape.DenseCloudData, 
                      vertex_colors=True, 
-                     vertex_confidence=True, 
-                     subdivide_task=False)
+                     vertex_confidence=True)
                      
 # decimate mesh to half of face count
 doc.chunk.decimateModel(face_count = len(doc.chunk.model.faces) / 2)
@@ -262,11 +255,10 @@ projection.crs = Metashape.CoordinateSystem(EPSG)
 # build orthomosaic
 doc.chunk.buildOrthomosaic(surface_data=Metashape.ModelData,
                            blending_mode=Metashape.MosaicBlending,
-                           ghosting_filter=False,
+                           ghosting_filter=True,
                            fill_holes=True,
-                           cull_faces=False,
+                           cull_faces=True,
                            refine_seamlines=True,   # True as OFO           
-                           subdivide_task=False,
                            projection=projection)
 
 # get an ending time stamp for the previous step
@@ -290,7 +282,6 @@ projection.crs = Metashape.CoordinateSystem(EPSG)
 
 doc.chunk.buildDem(source_data = Metashape.DenseCloudData,
                 interpolation = Metashape.EnabledInterpolation,
-                subdivide_task = False,
                 projection = projection)
 
 # get an ending time stamp for the previous step

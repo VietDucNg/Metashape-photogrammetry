@@ -27,7 +27,6 @@ projection.crs = Metashape.CoordinateSystem("EPSG::5650")
 
 doc.chunk.buildDem(source_data = Metashape.DenseCloudData,
                 interpolation = Metashape.EnabledInterpolation,
-                subdivide_task = False,
                 projection = projection)
 doc.save()
 

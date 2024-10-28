@@ -27,11 +27,10 @@ projection.crs = Metashape.CoordinateSystem("EPSG::5650")
 # build orthomosaic
 doc.chunk.buildOrthomosaic(surface_data=Metashape.ModelData,
                            blending_mode=Metashape.MosaicBlending,
-                           ghosting_filter=False,
+                           ghosting_filter=True,
                            fill_holes=True,
-                           cull_faces=False,
+                           cull_faces=True,
                            refine_seamlines=True,   # True as OFO           
-                           subdivide_task=False,
                            projection=projection)
 doc.save()
 
