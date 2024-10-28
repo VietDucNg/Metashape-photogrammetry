@@ -127,7 +127,7 @@ Metashape Pro can automatically sort out those calibration images to the special
  > Then, filter on quality and Disable all selected cameras that do not meet the standard. Agisoft recommends a Quality of at least 0.5.
 
  ### 3. Reflectance calibration
-Open Tools Menu and choose to Calibrate Reflectance option. Press Locate Panels button:
+Open Tools Menu and choose to Calibrate Reflectance option. Press <i>Locate Panels</i> button:
 
 ![reflectance calibration](/images/02_reflectance_calibration.jpeg)
 
@@ -182,13 +182,13 @@ The following optimizations to improve quality of the sparse point cloud includi
 #### 8.2 Filter uncertain points
 ![filter uncertain points](/images/06_filter_by_reconstruction_uncertainty.gif)
 
-A good value to use for uncertainty lever is 10, though make sure do not remove all points by doing so!. A rule of thumb is to select no more than two-thirds to half of all points, and then delete these by pressing the Delete key on the keyboard.
+A good value to use for uncertainty lever is 15, though make sure do not remove all points by doing so!. A rule of thumb is to select no more than 20% of all points, and then delete these by pressing the Delete key on the keyboard.
 
 > [!TIP]
 > After filtering points, it is important to once more optimize the alignment of the points. Doing so by revisiting the [Optimize Camera Alignment](#optimize-camera-alignment)
 
 #### 8.3 Filter by Projection accuracy
-This time, select the points based on their *Projection accuracy*, aiming for a final Projection accuracy of 3.
+This time, select the points based on their *Projection accuracy*, aiming for a final Projection accuracy of 2.
 
 ![filter by projection accuracy](/images/07_filter_by_projection_accuracy.png)
 
