@@ -8,7 +8,7 @@
 
 ## Credits
 
-The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Science Lab](https://geo.uni-greifswald.de/en/chairs/geographie/translate-to-english-fernerkundung-und-geoinformationsverarbeitung/)* - *[University of Greifswald](https://www.uni-greifswald.de/en/)*) based on  
+The tutorial prepared by <a href='https://vietducng.github.io/'>Viet Nguyen</a> (*[Earth Observation and Geoinformation Science Lab](https://geo.uni-greifswald.de/en/chairs/geographie/translate-to-english-fernerkundung-und-geoinformationsverarbeitung/)* - *[University of Greifswald](https://www.uni-greifswald.de/en/)*) based on  
 - The *[Geo-SfM](https://unisvalbard.github.io/Geo-SfM/landing-page.html#)* course from *[The University Centre in Svalbard](https://www.unis.no/)*
 - The *[Structure From Motion tutorial](https://pubs.usgs.gov/of/2021/1039/ofr20211039.pdf)* from USGS
 - The *[Drone RGB and Multispectral Imagery Processing Protocol](https://www.tern.org.au/wp-content/uploads/20230829_drone_rgb_multispec_processing.pdf)* from The University of Queensland.
@@ -45,7 +45,7 @@ The tutorial prepared by Viet Nguyen (*[Earth Observation and Geoinformation Sci
 <br />
 
 ## Code and version
-The tutorial not only guide the main steps of photogrammetry in Metashape GUI, but there also are Python scripts for those steps to use in Metashape Python console. The scripts were designed for Metashape version 1.8.4.
+The tutorial not only guide the main steps of photogrammetry in Metashape GUI, but there also are <b>Python scripts</b> for those steps to use in Metashape Python console. The scripts were designed for Metashape version 1.8.4 and 2.1.3.
 
 <br />
 

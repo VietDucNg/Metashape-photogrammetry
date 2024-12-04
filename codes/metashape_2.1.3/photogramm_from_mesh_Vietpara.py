@@ -64,7 +64,7 @@ doc.chunk.matchPhotos(downscale=2, # USGS (1) # medium(2) for vegetation as OFO
                       filter_stationary_points=True, 
                       keypoint_limit=40000, # 60000 for high quality photos
                       keypoint_limit_per_mpx = 5000,  
-                      tiepoint_limit=4000,
+                      tiepoint_limit=10000,
                       keep_keypoints=True, 
                       guided_matching=True, 
                       reset_matches=False)
@@ -99,10 +99,10 @@ class metashape_tiepoint_filter:
         else:
             self.doc = Metashape.app.document
         self.chunk = self.doc.chunk
-        self.total_tie_points = len(self.chunk.point_cloud.points)
+        self.total_tie_points = len(self.chunk.tie_points.points)
 
     def standard_run(self):
-        if len(self.chunk.dense_clouds) == 0:
+        if len(self.chunk.point_clouds) == 0:
             self.optimize_cameras()
             self.filter_reconstruction_uncertainty()
             self.optimize_cameras()
@@ -141,8 +141,8 @@ class metashape_tiepoint_filter:
     def filter_reconstruction_uncertainty(self, x = 15): # 10 according to USGS # 15 according to OFO
         print("filter_reconstruction_uncertainty")
         self.chunk = self.chunk.copy()
-        f = Metashape.PointCloud.Filter()
-        f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReconstructionUncertainty)
+        f = Metashape.TiePoints.Filter()
+        f.init(self.chunk, criterion = Metashape.TiePoints.Filter.ReconstructionUncertainty)
         while (len([i for i in f.values if i >= x])/self.total_tie_points) >= 0.2: # 0.5 according to usgs # 0.2 according to OFO
             x += 0.1
         x = round(x,1)
@@ -152,21 +152,21 @@ class metashape_tiepoint_filter:
     def filter_projection_accuracy(self, x = 2): # 3 according to usgs # 2 according to OFO
         print("filter_projection_accuracy")
         # self.chunk = self.chunk.copy()
-        f = Metashape.PointCloud.Filter()
-        f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ProjectionAccuracy)
-        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.3: # 0.5 according to usgs # 0.3 according to OFO
+        f = Metashape.TiePoints.Filter()
+        f.init(self.chunk, criterion = Metashape.TiePoints.Filter.ProjectionAccuracy)
+        while (len([i for i in f.values if i >= x])/len(self.chunk.tie_points.points)) >= 0.3: # 0.5 according to usgs # 0.3 according to OFO
             x += 0.1
         x = round(x,1)
         # old version with self.chunk.coppy(): self.chunk.label = f"{self.chunk.label.split('Copy of ')[1]}_ProjAcc={x}"
         self.chunk.label = f"{self.chunk.label}_ProjAcc={x}"
         f.removePoints(x)
         
-    def filter_reprojection_error(self, x = 0.3):  # 0.3 according to OFO
+    def filter_reprojection_error(self, x = 0.3): # 0.3 according to OFO
         print("filter_reprojection_error")
         # self.chunk = self.chunk.copy()
-        f = Metashape.PointCloud.Filter()
-        f.init(self.chunk, criterion = Metashape.PointCloud.Filter.ReprojectionError)
-        while (len([i for i in f.values if i >= x])/len(self.chunk.point_cloud.points)) >= 0.05:# 0.1 as usgs # 0.05 according to OFO
+        f = Metashape.TiePoints.Filter()
+        f.init(self.chunk, criterion = Metashape.TiePoints.Filter.ReprojectionError)
+        while (len([i for i in f.values if i >= x])/len(self.chunk.tie_points.points)) >= 0.05:# 0.1 as usgs # 0.05 according to OFO
             x += 0.005
         print('Reprojection error level:',x)
         x = round(x,2)
@@ -201,7 +201,7 @@ doc.chunk.buildDepthMaps(downscale = 2, # medium (4) according to OFO
 timer3a = time.time()
 
 # build dense cloud
-doc.chunk.buildDenseCloud(point_colors = True, 
+doc.chunk.buildPointCloud(point_colors = True, 
                           point_confidence = True, 
                           max_neighbors=100)
 
@@ -224,7 +224,7 @@ timer5a = time.time()
 doc.chunk.buildModel(surface_type=Metashape.HeightField, 
                      interpolation=Metashape.EnabledInterpolation, 
                      face_count=Metashape.MediumFaceCount, # medium as OFO
-                     source_data=Metashape.DenseCloudData, 
+                     source_data=Metashape.PointCloudData, 
                      vertex_colors=True, 
                      vertex_confidence=True)
                      
@@ -280,7 +280,7 @@ timer7a = time.time()
 projection = Metashape.OrthoProjection()
 projection.crs = Metashape.CoordinateSystem(EPSG)
 
-doc.chunk.buildDem(source_data = Metashape.DenseCloudData,
+doc.chunk.buildDem(source_data = Metashape.PointCloudData,
                 interpolation = Metashape.EnabledInterpolation,
                 projection = projection)
 
