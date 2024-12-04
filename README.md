@@ -92,7 +92,11 @@ The standardised project structures are important for automated processing and a
 
 ## Getting started
 > [!TIP]
-> Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. For fully automate workflow, use the GUI for step 1 to step 7 (add GCPs), the next steps can use the code for all-in-one workflow [here](/codes/photogramm_from_mesh_Vietpara.py)
+> Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. For fully automate workflow, use the GUI for step 1 to step 7 (add GCPs), the next steps can use the code for all-in-one workflow:
+
+<a href='/codes/metashape_1.8.4/photogramm_from_mesh_Vietpara.py'>Python script for Metashape 1.8.4 </a>
+
+<a href='/codes/metashape_1.8.4/photogramm_from_mesh_Vietpara.py'>Python script for Metashape 2.1.3 </a>
 
 ### 1. Add photos
 It is helpful to include the subfolder name in the photo file name in Metashape (to differentiate photos from which flight). Below is the [code](/codes/01_rename_photo.py) for Python console to rename all photos to reflect the subfolder they are in.
