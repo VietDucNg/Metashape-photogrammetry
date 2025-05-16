@@ -85,6 +85,9 @@ time2 = diff_time(timer2b, timer2a)
 # print time record
 print('Alignment finish after',time2,'second.')
 
+# save project
+doc.save()
+
 
 ###############################################
 #### optimize camera and filter tie points ####
@@ -180,6 +183,9 @@ class metashape_tiepoint_filter:
 a = metashape_tiepoint_filter(None)
 a.standard_run()
 
+# save project
+doc.save()
+
 
 ###########################
 #### build dense cloud ####
@@ -212,6 +218,9 @@ timer4b = time.time()
 time4 = diff_time(timer4b, timer4a)
 print('Build Dense cloud finished after',time4,'seconds.')
 
+# save project
+doc.save()
+
 
 ####################
 #### build mesh ####
@@ -240,6 +249,9 @@ timer5b = time.time()
 time5 = diff_time(timer5b, timer5a)
 print('Build Mesh finished after',time5,'seconds.')
 
+# save project
+doc.save()
+
 
 ###########################
 #### build orthomosaic ####
@@ -267,6 +279,9 @@ timer6b = time.time()
 # calculate difference between end and start time to 1 decimal place
 time6 = diff_time(timer6b, timer6a)
 print('Build Orthomosaic finished after',time6,'seconds.') 
+
+# save project
+doc.save()
 
 
 ###################
