@@ -2,7 +2,7 @@
 
 # Metashape-photogrammetry
 
- *[Metashape](https://www.agisoft.com/)* step-by-step tutorial using GUI and Python API for photogrammetry (point clouds, DEM, mesh, texture and orthomosaic) from arial images.
+ *[Metashape](https://www.agisoft.com/)* step-by-step tutorial using GUI and Python console for photogrammetry (point clouds, DEM, mesh, texture and orthomosaic) from arial images.
 
 <br />
 
@@ -22,30 +22,42 @@ The tutorial prepared by <a href='https://vietducng.github.io/'>Viet Nguyen</a> 
 [Project structure](#project-structure-1)  
 
 [Getting started](#getting-started)  
-1. [Add photos](#1-add-photos)
-2. [Estimate image quality](#2-estimate-image-quality)
-3. [Reflectance calibration](#3-reflectance-calibration)
-4. [Set primary channel](#4-set-primary-channel)
-5. [Image projection](#5-image-projection)
-6. [Align photos](#6-align-photos)
-7. [Add ground control points](#7-add-ground-control-points)
-8. [Improve alignment](#8-improve-alignment)  
-        - [8.1 Optimize Camera Alignment](#81-optimize-camera-alignment)  
-        - [8.2 Filter uncertain points](#82-filter-uncertain-points)  
-        - [8.3 Filter by Projection accuracy](#83-filter-by-projection-accuracy)  
-        - [8.4 Filter by Reprojection Error](#84-filter-by-reprojection-error)
-9. [Dense point cloud](#9-dense-point-cloud)
-10. [Mesh model](#10-mesh-model)
-11. [Orthomosaic](#11-orthomosaic)
-12. [DEM](#12-dem)
-13. [Texture](#13-texture)  
+- [Metashape-photogrammetry](#metashape-photogrammetry)
+  - [Credits](#credits)
+  - [Table of Contents](#table-of-contents)
+  - [Code and version](#code-and-version)
+  - [Project structure](#project-structure)
+  - [Getting started](#getting-started)
+    - [GUI or automatic with Python code?](#gui-or-automatic-with-python-code)
+    - [1. Add photos](#1-add-photos)
+    - [2. Estimate image quality](#2-estimate-image-quality)
+    - [3. Reflectance calibration](#3-reflectance-calibration)
+    - [4. Set primary channel](#4-set-primary-channel)
+    - [5. Image projection](#5-image-projection)
+    - [6. Align photos](#6-align-photos)
+    - [7. Add ground control points](#7-add-ground-control-points)
+    - [8. Improve alignment](#8-improve-alignment)
+      - [8.1 Optimize Camera Alignment](#81-optimize-camera-alignment)
+      - [8.2 Filter uncertain points](#82-filter-uncertain-points)
+      - [8.3 Filter by Projection accuracy](#83-filter-by-projection-accuracy)
+      - [8.4 Filter by Reprojection Error](#84-filter-by-reprojection-error)
+    - [9. Dense point cloud](#9-dense-point-cloud)
+      - [9.1. Filter by point confidence](#91-filter-by-point-confidence)
+    - [10. Mesh model](#10-mesh-model)
+      - [10.1. Filter the mesh](#101-filter-the-mesh)
+      - [10.2. Decimate mesh](#102-decimate-mesh)
+      - [10.3. Smooth mesh](#103-smooth-mesh)
+    - [11. Orthomosaic](#11-orthomosaic)
+    - [12. DEM](#12-dem)
+    - [13. Texture](#13-texture)
+  - [Documenting](#documenting)
 
 [Documenting](#documenting)
 
 <br />
 
 ## Code and version
-The tutorial not only guide the main steps of photogrammetry in Metashape GUI, but there also are <b>Python scripts</b> for those steps to use in Metashape Python console. The scripts were designed for Metashape version 1.8.4 and 2.1.3.
+The tutorial not only guide the main steps of photogrammetry in Metashape GUI, but there also are <b>Python scripts</b> for those steps to use in Metashape Python console. The scripts were tested for Metashape version 1.8 and 2.1.
 
 <br />
 
@@ -91,12 +103,15 @@ The standardised project structures are important for automated processing and a
 <br />
 
 ## Getting started
+
+### GUI or automatic with Python code?
+
+Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. For automate workflow, use the GUI for step 1 to step 7 (add GCPs), the next steps can use the code for all-in-one workflow:
+
+
 > [!TIP]
-> Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. For fully automate workflow, use the GUI for step 1 to step 7 (add GCPs), the next steps can use the code for all-in-one workflow:
-
-<a href='/codes/metashape_1.8.4/photogramm_from_mesh_Vietpara.py'>Python script for Metashape 1.8.4 </a>
-
-<a href='/codes/metashape_1.8.4/photogramm_from_mesh_Vietpara.py'>Python script for Metashape 2.1.3 </a>
+> <a href='/codes/metashape_1.8/photogramm_from_mesh_Vietpara.py'>Python script for Metashape 1.8 </a> <br></br>
+><a href='/codes/metashape_2.1/photogramm_from_mesh_Vietpara.py'>Python script for Metashape 2.1 </a>
 
 ### 1. Add photos
 It is helpful to include the subfolder name in the photo file name in Metashape (to differentiate photos from which flight). Below is the [code](/codes/01_rename_photo.py) for Python console to rename all photos to reflect the subfolder they are in.
