@@ -51,7 +51,7 @@ The tutorial prepared by <a href='https://vietducng.github.io/'>Viet Nguyen</a> 
       - [10.2. Decimate mesh](#102-decimate-mesh)
       - [10.3. Smooth mesh](#103-smooth-mesh)
     - [11. Orthomosaic](#11-orthomosaic)
-  - [11.1. Normalizing orthomosaic](#111-normalizing-orthomosaic)
+      - [11.1. Normalizing orthomosaic](#111-normalizing-orthomosaic)
     - [12. DEM](#12-dem)
     - [13. Texture](#13-texture)
   - [Documenting](#documenting)
@@ -288,7 +288,7 @@ It is recommended to use _Mesh_ as surface. For complete coverage, enable the _h
 
 The code for _Build orthomosaic_ to use in Python API can be found [here](/codes/06_build_orthomosaic.py).
 
-## 11.1. Normalizing orthomosaic
+#### 11.1. Normalizing orthomosaic
 
 Metashape performs the reflectance calibration operation according to <a href='https://support.micasense.com/hc/en-us/articles/215460518-What-are-the-units-of-the-Atlas-GeoTIFF-output'>MicaSense recommendations</a>. So the values in the output bands would still be 16 bit integer values like the input values, but 100% reflectance for each band would correspond to the middle of the available range, i.e. to 32768 value. In case it is necessary to export the reflectance normalized to 0 - 1 range, then it is required to create Output bands in the <i>Raster Calculator</i> dialog and for each one of them input the formula that divides the source value by the normalization factor: B1/32768; B2/32768; B3/32768; B4/32768; B5/32768,etc.:
 
