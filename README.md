@@ -160,7 +160,7 @@ As a result, the images with the panel will be moved to a separate folder and th
 
 ### 4. Set primary channel
 
-The main processing steps (e.g., Align photos) are performed on the primary channel. Change the primary channel from the default _Blue_ band to _NIR_ band for multispectral images or _green_ band for RGB images which is more detailed and sharp for vegetation.
+For multispectral images, the main processing steps (e.g., Align photos) are performed on the primary channel. Change the primary channel from the default _Blue_ band to _NIR_ band which is more detailed and sharp for vegetation.
 
 ![set primary channel](/images/04_set_primary_channel.png)
 
