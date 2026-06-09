@@ -114,8 +114,8 @@ The standardised project structures are important for automated processing and a
 Below are step-by-step guildance in Metashape GUI and Python scripts for those steps. For automate workflow, use the GUI for step 1 to step 7 (add GCPs), the next steps can use the code for all-in-one workflow:
 
 > [!TIP]
-> <a href='/codes/metashape_1.8/photogramm_from_mesh_Vietpara.py'>Python script for Metashape 1.8 </a> <br></br>
-> <a href='/codes/metashape_2.1/photogramm_from_mesh_Vietpara.py'>Python script for Metashape 2.1 </a>
+> <a href='/codes/metashape_1.8/photogramm_allInOne.py'>Python script for Metashape 1.8 </a> <br></br>
+> <a href='/codes/metashape_2.1/photogramm_allInOne.py'>Python script for Metashape 2.1 </a>
 
 ### 1. Add photos
 
