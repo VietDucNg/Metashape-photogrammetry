@@ -184,11 +184,11 @@ Go to _Import Reference_ in the _Reference_ panel and load the csv file.
 
 Follow [this tutorial](https://www.youtube.com/watch?v=G09r5PXqhBc) to set the gcp.
 
-<strong>Personal experience ⚠️</strong>:
+<!-- <strong>Personal experience ⚠️</strong>:
 
 GCPs should be set over the study area many enough to correct the position of the orthomosaic. With only few GCPs, the distortion may be not significantly visible in the orthomosaic interms of X, Y values, but can be clealy see in the DEM (Z values).
 
-The Z values from geo-taged photos are relatively good already. So 1 solution could be only using X, Y values from GCPs to correct position of the orthomosaic and DEM, but Z values from photos used from DEM. To do that, set the accuracy of GCPs to 0.005/10 (5mm for X, Y and 10m for Z) and go to <i>Tool</i> -> <i>Camera Calibration</i> -> <i>GPS offset</i> and set camera accuracy to X: 0.05, y: 0.05, Z: 0.02. This way the program will prioritize X, Y values of GCPs and Z value of photo itself for the orthomosaic and DEM.
+The Z values from geo-taged photos are relatively good already. So 1 solution could be only using X, Y values from GCPs to correct position of the orthomosaic and DEM, but Z values from photos used from DEM. To do that, set the accuracy of GCPs to 0.005/10 (5mm for X, Y and 10m for Z) and go to <i>Tool</i> -> <i>Camera Calibration</i> -> <i>GPS offset</i> and set camera accuracy to X: 0.05, y: 0.05, Z: 0.02. This way the program will prioritize X, Y values of GCPs and Z value of photo itself for the orthomosaic and DEM. -->
 
 ### 8. Improve alignment
 
